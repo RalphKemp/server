@@ -6,9 +6,6 @@ const app = express();
 
 passport.use(new GoogleStrategy());
 
-// client id: client_id":"548233704598-smqt5rck2gc5o8du8fo9a5d08h4qitdd.apps.googleusercontent.com
-// client secret: yZ4mBitdrCrzwD-CG9453nNE
-
 
 const PORT = process.env.PORT || 5000;
 // when heroku runs, it injects environment variables.
