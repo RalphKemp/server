@@ -1,6 +1,10 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('../config/keys');
+const mongoose = require('mongoose');
+
+const User = mongoose.model('users');
+// now user is our model class (collection)
 
 passport.use(
   new GoogleStrategy({
@@ -8,12 +12,11 @@ passport.use(
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
   }, (accessToken, refreshToken, profile, done) => {
-    console.log('accessToken', accessToken);
-    console.log('refreshToken', refreshToken);
-    console.log('profile', profile);
+    new User({ googleId: profile.id }).save();
   })
 );
 
+// above, .save on the new user is persisting the new class instance to our database.
 
 // GoogleStrategy says to passport: hey if anyone tries to authenticate with a string called google,
 // (like below in the route handler, then use me). the scope specifies to google what access we want to have

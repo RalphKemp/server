@@ -1,10 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
-require('./services/passport');
 require('./models/User');
+require('./services/passport');
 
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.MONGODB_URI);
 
 const app = express();
 
@@ -18,5 +18,4 @@ const PORT = process.env.PORT || 5000;
 // Look at the underliying enviroment, and see if we've stated a port to use
 
 app.listen(PORT); // express telling node which port to listen to.
-
 
