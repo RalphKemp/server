@@ -12,7 +12,17 @@ passport.use(
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
   }, (accessToken, refreshToken, profile, done) => {
-    new User({ googleId: profile.id }).save();
+    User.findOne({ googleId: profile.id})
+      .then((existingUser) => {
+        if (existingUser) {
+          // we already have a record with thegiven profile id
+        } else {
+          // we don't have a record, make a new one
+          new User({ googleId: profile.id }).save();
+        }
+      })
+    // any time we reach out to our mongoose db, we are initiating an asyncronous action.
+    // the query returns a promise.
   })
 );
 
