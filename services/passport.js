@@ -12,11 +12,18 @@ passport.serializeUser((user, done) => {
 // profile id and user id are different.
 // user id is a shortcut to _id in mongoDB
 
+// so google Oauth flow is providing us with a profile id,
+// which is specifically for the porition of our authenticfication flow that identifies
+// a user who's first trying to sign in. After the user has signed in, we don't care about the
+// profile id anymore. Now we only care about our own internal id, which is the mondoDB id,
+// from our user model instance.
 
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  })
+});
 
-
-
-// now user is our model class (collection)
 
 passport.use(
   new GoogleStrategy({
