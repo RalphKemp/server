@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session'); // gives us access to cookies
+const passport = require('passport'); // tell passport to make use of cookies
 const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
@@ -7,6 +9,16 @@ require('./services/passport');
 mongoose.connect(keys.MONGODB_URI);
 
 const app = express();
+
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000, // how long the cookie can live in the brwoser before dying (ms)
+    keys: [keys.cookieKey] // used to encrypt our cookie
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 require('./routes/authRoutes')(app);
 
