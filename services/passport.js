@@ -9,14 +9,6 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// profile id and user id are different.
-// user id is a shortcut to _id in mongoDB
-
-// so google Oauth flow is providing us with a profile id,
-// which is specifically for the porition of our authenticfication flow that identifies
-// a user who's first trying to sign in. After the user has signed in, we don't care about the
-// profile id anymore. Now we only care about our own internal id, which is the mondoDB id,
-// from our user model instance.
 
 passport.deserializeUser((id, done) => {
   User.findById(id).then(user => {
@@ -32,28 +24,29 @@ passport.use(
     callbackURL: '/auth/google/callback',
     proxy: true // if our request runs through a proxy, it's fine (heroku porxy between browser and our server)
   },
-  (accessToken, refreshToken, profile, done) => {
-    User.findOne({ googleId: profile.id}).then(existingUser => {
-      if (existingUser) {
-          // we already have a record with thegiven profile id
-          done(null, existingUser);
-        } else {
-          // we don't have a record, make a new one
-          new User({ googleId: profile.id })
-            .save()
-            .then(user => done(null, user));
-          // the second instance of user here represents the same instance, but by convention we make
-          // use of the one provided to us inside of the promise callback.
-        }
-      });
+  async (accessToken, refreshToken, profile, done) => {
+    const existingUser = await User.findOne({ googleId: profile.id});
+
+    if (existingUser) {
+      return done(null, existingUser);
+    }
+      const user = await new User({ googleId: profile.id }).save();
+      done(null, user);
     }
   )
 );
 
- // any time we reach out to our mongoose db, we are initiating an asyncronous action.
-    // the query returns a promise.
-    // 'exisiting user' he obviously is a model instance.
-    // 'done' is a function that tells passport that we're done.
+// we already have a record with thegiven profile id
+// the second instance of user here represents the same instance, but by convention we make
+// use of the one provided to us inside of the promise callback.
+
+// in the async function above, by using return in the first bit of the if statement,
+// if there is a user only that bit of code is run, negating the need of an 'else'.
+
+// any time we reach out to our mongoose db, we are initiating an asyncronous action.
+// the query returns a promise.
+// 'exisiting user' he obviously is a model instance.
+// 'done' is a function that tells passport that we're done.
 
 // above, .save on the new user is persisting the new class instance to our database.
 
