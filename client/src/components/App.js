@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-const Header = () => <h2>Header</h2>;
+const Header = () => <h2>Header motherfucker</h2>;
 const Dashboard = () => <h2>Dashboard</h2>;
-const SurveryNew = () => <h2>SurveryNew</h2>;
+const SurveyNew = () => <h2>SurveyNew</h2>;
 const Landing = () => <h2>Landing</h2>;
 
 const App = () => {
@@ -11,7 +11,10 @@ const App = () => {
     <div>
       <BrowserRouter>
         <div>
-          <Route path='/' component={Landing} />
+          <Header /> {/*to show at all times*/}
+          <Route exact path='/' component={Landing} /> {/*exact = {true}*/}
+          <Route exact path='/surveys' component={Dashboard} />
+          <Route path='/surveys/new' component={SurveyNew} />
         </div>
       </BrowserRouter>
     </div>
