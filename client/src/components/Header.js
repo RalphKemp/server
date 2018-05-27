@@ -14,7 +14,7 @@ class Header extends Component {
           </a>
         </div>
       </nav>
-    )
+    );
   }
 }
 
