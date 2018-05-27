@@ -9,6 +9,9 @@ class Header extends Component {
           <a className="left brand-logo">
             Emaily
           </a>
+          <a className="right sign-in">
+            Login With Google
+          </a>
         </div>
       </nav>
     )
