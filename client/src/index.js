@@ -20,9 +20,6 @@ ReactDOM.render(
 
 
 
-
-
-
 // Here we've created a redux store at the very top level of our application,
 // and hooked it up to the react side of our application by placing
 // the provider tag. Provider is a react component that knows how to read changes
