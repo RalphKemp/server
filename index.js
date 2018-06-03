@@ -30,6 +30,8 @@ app.use(passport.session());
 
 
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
+
 
 // when we require the authRoutes file, it returns a function.
 // we then immedaitly call that function with the app object.
