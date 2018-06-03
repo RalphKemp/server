@@ -3,13 +3,17 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session'); // gives us access to cookies
 const passport = require('passport'); // tell passport to make use of cookies
 const keys = require('./config/keys');
+const bodyParser = require('body-parser');
 require('./models/User');
 require('./services/passport');
+
 
 mongoose.connect(keys.MONGODB_URI);
 
 const app = express();
 
+
+app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, // how long the cookie can live in the brwoser before dying (ms)
