@@ -19,15 +19,17 @@ module.exports = app => {
     });
 
     const mailer = new Mailer(survey, surveyTemplate(survey));
-    await mailer.send();
-    await survey.save();
-    req.user.credits -+ 1;
-    const user = await req.user.save();
-    res.send(user);
+    try {
+      await mailer.send();
+      await survey.save();
+      req.user.credits -= 1;
+      const user = await req.user.save();
+      res.send(user);
+    } catch (err) {
+      res.status(422).send(err);
+    }
   });
 };
-
-
 
 // requireLogin here is a reference to a function, we're not calling it directly.
 // We're saying hey, if there is a req and res, here's a request to the function that you'll run
