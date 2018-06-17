@@ -40,9 +40,11 @@ class SurveyForm extends Component {
 function validate(values) {
   const errors = {};
 
-  if(!values.title) {
-    errors.title = 'you must provide a title';
-  }
+  _.each(FIELDS, ({ name }) => {
+    if(!values[name]) {
+      errors[name] = `you must provide a ${name}`;
+    }
+  })
 
   return errors;
   // if errors is empty, reduxform knows there are no errors.
@@ -61,3 +63,12 @@ export default reduxForm({
 // adding on label as a prop to the field, it is automatically passed on to our survey field component.
 
 // note: keys for an iteration have to be consistent across renders.
+
+// the instance the form renders, the form runs validate. so we need until the user touches an input,
+// dont run validate yet.
+
+
+
+
+
+
