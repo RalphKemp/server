@@ -4,6 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 // redux form function here similiar to connect function, connecting form to application state
 import SurveyField from './SurveyField';
+import validateEmails from '../utils/validateEmails';
 
 const FIELDS = [
   { label: 'Survey Title', name: 'title'},
@@ -40,12 +41,13 @@ class SurveyForm extends Component {
 function validate(values) {
   const errors = {};
 
+  errors.emails = validateEmails(values.emails || '');
+
   _.each(FIELDS, ({ name }) => {
     if(!values[name]) {
       errors[name] = `you must provide a ${name}`;
     }
-  })
-
+  });
   return errors;
   // if errors is empty, reduxform knows there are no errors.
 }
