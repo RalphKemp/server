@@ -27,6 +27,7 @@
     "passport-google-oauth20": "^1.0.0",
     "prettier": "^1.13.4",
     "sendgrid": "^5.2.3",
-    "stripe": "^6.1.0"
+    "stripe": "^6.1.0",
+    "sweetalert": "^2.1.0"
   }
 }
