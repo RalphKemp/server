@@ -5,17 +5,11 @@ import { Link } from 'react-router-dom';
 // redux form function here similiar to connect function, connecting form to application state
 import SurveyField from './SurveyField';
 import validateEmails from '../utils/validateEmails';
-
-const FIELDS = [
-  { label: 'Survey Title', name: 'title'},
-  { label: 'Subject Line', name: 'subject'},
-  { label: 'Email body', name: 'body'},
-  { label: 'Recipient List', name: 'emails'}
-]
+import formFields from './formFields';
 
 class SurveyForm extends Component {
   renderFields() {
-    return _.map(FIELDS, ({ label, name }) => {
+    return _.map(formFields, ({ label, name }) => {
       return <Field key={name} component={SurveyField} type="text" label={label} name={name} />
     });
   }
@@ -45,7 +39,7 @@ function validate(values) {
 
   errors.emails = validateEmails(values.emails || '');
 
-  _.each(FIELDS, ({ name }) => {
+  _.each(formFields, ({ name }) => {
     if(!values[name]) {
       errors[name] = `you must provide a ${name}`;
     }
@@ -56,7 +50,8 @@ function validate(values) {
 
 export default reduxForm({
   validate,
-  form: 'surveyForm'
+  form: 'surveyForm',
+  destroyOnUnmount: false
 })(SurveyForm);
 
 
@@ -70,6 +65,8 @@ export default reduxForm({
 
 // the instance the form renders, the form runs validate. so we need until the user touches an input,
 // dont run validate yet.
+
+//destroyOnUnmount: false - if the component goes away, don't dump the form values
 
 
 
