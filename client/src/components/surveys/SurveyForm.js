@@ -23,8 +23,10 @@ class SurveyForm extends Component {
   render() {
     return(
       <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+        <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
           {this.renderFields()}
+        {/*we don't use parentheses after onSurveySubmit becuase it ould call the function straight away
+          we only want that to happen after submission */}
           <button type="submit" className="teal btn-flat right white-text">
             next
             <i className="material-icons right">done</i>
