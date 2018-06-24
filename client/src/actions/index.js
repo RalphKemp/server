@@ -12,8 +12,12 @@ export const handleToken = (token) => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const submitSurvey = values => {
-  return { type: 'submit_survey' };
+export const submitSurvey = (values, history) => async dispatch => {
+  const res = await axios.post('/api/surveys', values);
+
+  history.push('/surveys');
+  alert('survey sent');
+  dispatch({ type: FETCH_USER, payload: res.data});
 }
 
 // redux thunk breaks the rule that we have to return an action
