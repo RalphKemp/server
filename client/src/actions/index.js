@@ -12,6 +12,10 @@ export const handleToken = (token) => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
+export const submitSurvey = values => {
+  return { type: 'submit_survey' };
+}
+
 // redux thunk breaks the rule that we have to return an action
 // from every action creator. It basically gives us access to the dispatch function.
 // allowing us to manually dispatch an action instead of just returning it.
