@@ -4,17 +4,12 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router-dom';
 // redux form function here similiar to connect function, connecting form to application state
 import SurveyField from './SurveyField';
-
-const FIELDS = [
-  { label: 'Survey Title', name: 'title'},
-  { label: 'Subject Line', name: 'subject'},
-  { label: 'Email body', name: 'body'},
-  { label: 'Recipient List', name: 'emails'}
-]
+import validateEmails from '../utils/validateEmails';
+import formFields from './formFields';
 
 class SurveyForm extends Component {
   renderFields() {
-    return _.map(FIELDS, ({ label, name }) => {
+    return _.map(formFields, ({ label, name }) => {
       return <Field key={name} component={SurveyField} type="text" label={label} name={name} />
     });
   }
@@ -22,8 +17,10 @@ class SurveyForm extends Component {
   render() {
     return(
       <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+        <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
           {this.renderFields()}
+        {/*we don't use parentheses after onSurveySubmit becuase it ould call the function straight away
+          we only want that to happen after submission */}
           <button type="submit" className="teal btn-flat right white-text">
             next
             <i className="material-icons right">done</i>
@@ -40,19 +37,21 @@ class SurveyForm extends Component {
 function validate(values) {
   const errors = {};
 
-  _.each(FIELDS, ({ name }) => {
+  errors.emails = validateEmails(values.emails || '');
+
+  _.each(formFields, ({ name }) => {
     if(!values[name]) {
       errors[name] = `you must provide a ${name}`;
     }
-  })
-
+  });
   return errors;
   // if errors is empty, reduxform knows there are no errors.
 }
 
 export default reduxForm({
   validate,
-  form: 'surveyForm'
+  form: 'surveyForm',
+  destroyOnUnmount: false
 })(SurveyForm);
 
 
@@ -66,6 +65,8 @@ export default reduxForm({
 
 // the instance the form renders, the form runs validate. so we need until the user touches an input,
 // dont run validate yet.
+
+//destroyOnUnmount: false - if the component goes away, don't dump the form values
 
 
 
