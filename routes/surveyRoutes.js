@@ -17,7 +17,7 @@ module.exports = app => {
   app.post('/api/surveys/webhooks', (req, res) => {
     const p = new Path('/api/surveys/:surveyId/:choice');
 
-    const events = _.chain(req.body)
+    _.chain(req.body)
       .map(({ email, url }) => {
         const match = p.test(new URL(url).pathname);
         if (match) {
@@ -26,9 +26,22 @@ module.exports = app => {
       })
       .compact()
       .uniqBy('email', 'surveyId')
-      .value();
+      .each(({ surveyId, email, choice}) => {
+        Survey.updateOne(
+        {
+          _id: surveyId,
+          recipients: {
+            $elemMatch: { email: email, responded: false }
+          }
+        },
+        {
+          $inc: { [choice]: 1 },
+          $set: { 'recipients.$.responded': true }
+        }
+      ).exec();
+    })
+    .value();
 
-      console.log(events);
       res.send({});
   });
 
@@ -58,5 +71,23 @@ module.exports = app => {
 
 // requireLogin here is a reference to a function, we're not calling it directly.
 // We're saying hey, if there is a req and res, here's a request to the function that you'll run
+
+
+// $inc is a mongo operator, that says find the either the yes or no property,
+// and increment it by one.
+// set - go into the subdocuments collection, find the appropriate reciepient who was just found
+// in the elem match, look at their responded property and set it to true.
+
+// ids in mongodb are _id
+
+
+
+
+
+
+
+
+
+
 
 
