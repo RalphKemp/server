@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
 // when we require the authRoutes file, it returns a function.
 // we then immedaitly call that function with the app object.
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 // when heroku runs, it injects environment variables.
 // Look at the underliying enviroment, and see if we've stated a port to use
 
