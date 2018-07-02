@@ -77,12 +77,14 @@ module.exports = app => {
 
   app.delete('/api/surveys/:surveyId', async (req, res) => {
     const { id } = req.body;
-    const survey = await Survey.findOneAndRemove({ id });
-    if (!survey) {
-      res.status(404).send({error: "not found"});
-    } else {
-      res.send(204).send({alert: "survey deleted"});
-    }
+    console.log(id);
+    const survey = await Survey.findOneAndRemove({ _id: id });
+    console.log('dsfsdf');
+    // if (!survey) {
+    //   res.sendStatus(404).send({error: "not found"});
+    // } else {
+    //   res.sendStatus(204).send({alert: "survey deleted"});
+    // }
   });
 }
 
