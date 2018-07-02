@@ -1,12 +1,11 @@
 import axios from 'axios';
 import swal from 'sweetalert';
-import { FETCH_USER, FETCH_SURVEYS } from './types';
+import { FETCH_USER, FETCH_SURVEYS, DELETE_SURVEY } from './types';
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user');
   dispatch({ type: FETCH_USER, payload: res.data });
 };
-
 
 export const handleToken = (token) => async dispatch => {
   const res = await axios.post('/api/stripe', token);
@@ -24,6 +23,11 @@ export const submitSurvey = (values, history) => async dispatch => {
 export const fetchSurveys = () => async dispatch => {
   const res = await axios.get('/api/surveys');
   dispatch({ type: FETCH_SURVEYS, payload: res.data});
+};
+
+export const deleteSurvey = (id) => async dispatch => {
+  const res = await axios.delete('/api/surveys/:surveyId', {data:{ id }});
+  dispatch({ type: DELETE_SURVEY, payload: res.data});
 };
 
 // redux thunk breaks the rule that we have to return an action

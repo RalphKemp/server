@@ -74,7 +74,15 @@ module.exports = app => {
       res.status(422).send(err);
     }
   });
-};
+
+  app.delete('/api/surveys/:surveyId', async (req, res) => {
+    console.log(req.body);
+
+    // const id = req.body.id;
+    // const surveys = await Survey.filter((survey, surveyIndex) => surveyIndex !== req.body.id);
+    // res.send(surveys);
+  });
+}
 
 // requireLogin here is a reference to a function, we're not calling it directly.
 // We're saying hey, if there is a req and res, here's a request to the function that you'll run
