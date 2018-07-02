@@ -76,11 +76,13 @@ module.exports = app => {
   });
 
   app.delete('/api/surveys/:surveyId', async (req, res) => {
-    console.log(req.body);
-
-    // const id = req.body.id;
-    // const surveys = await Survey.filter((survey, surveyIndex) => surveyIndex !== req.body.id);
-    // res.send(surveys);
+    const { id } = req.body;
+    const survey = await Survey.findOneAndRemove({ id });
+    if (!survey) {
+      res.status(404).send({error: "not found"});
+    } else {
+      res.send(204).send({alert: "survey deleted"});
+    }
   });
 }
 

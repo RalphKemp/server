@@ -1,5 +1,5 @@
 function localtunnel {
-  lt -s https://fwegmetimbers.localtunnel.me --port 5000
+  lt -s https://fwegmetimbers.localtunnel.me --port 6000
 }
 until localtunnel; do
 echo "localtunnel server crashed"
