@@ -77,15 +77,9 @@ module.exports = app => {
 
   app.delete('/api/surveys/:surveyId', async (req, res) => {
     const { id } = req.body;
-    console.log(id);
     const surveys = await Survey.find({ _id: {$ne: id} });
     const survey = await Survey.findOneAndRemove({ _id: id });
     res.send(surveys);
-    // if (!survey) {
-    //   res.sendStatus(404).send({error: "not found"});
-    // } else {
-    //   res.sendStatus(204).send({alert: "survey deleted"});
-    // }
   });
 }
 
