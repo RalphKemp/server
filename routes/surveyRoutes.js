@@ -76,7 +76,7 @@ module.exports = app => {
   });
 
   app.delete('/api/surveys/:surveyId', async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     const surveys = await Survey.find({ _id: {$ne: id} });
     const survey = await Survey.findOneAndRemove({ _id: id });
     res.send(surveys);
@@ -86,20 +86,11 @@ module.exports = app => {
 // requireLogin here is a reference to a function, we're not calling it directly.
 // We're saying hey, if there is a req and res, here's a request to the function that you'll run
 
-
 // $inc is a mongo operator, that says find the either the yes or no property,
 // and increment it by one.
 // set - go into the subdocuments collection, find the appropriate reciepient who was just found
 // in the elem match, look at their responded property and set it to true.
-
 // ids in mongodb are _id
-
-
-
-
-
-
-
 
 
 
